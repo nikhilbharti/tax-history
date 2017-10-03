@@ -1,49 +1,54 @@
-[ {
-  "payeReference" : "paye-1",
-  "employerName" : "employer-1",
-  "startDate" : "2016-01-21",
-  "endDate" : "2017-01-01",
-  "taxablePayTotal" : 123.12,
-  "taxTotal" : 14.14,
-  "earlierYearUpdates" : [
-    {
-      "taxablePayEYU":-12.12,
-      "taxEYU":-1.14,
-      "receivedDate":"2017-08-30"
-    },{
-      "taxablePayEYU":-21,
-      "taxEYU":-4.56,
-      "receivedDate":"2017-08-30"
-    }
-  ],
-  "companyBenefits":[
-    {
-      "typeDescription":"Car Fuel Benefit",
-      "amount":100,
-      "iabdMessageKey":"CarFuelBenefit"
-    },
-    {
-      "typeDescription":"Van Benefit",
-      "amount":100,
-      "iabdMessageKey":"VanBenefit"
-    }
-  ]
-}, {
-  "payeReference" : "paye-2",
-  "employerName" : "employer-2",
-  "startDate" : "2016-01-02",
-  "taxablePayTotal" : 543.21,
-  "taxTotal" : 78.9,
-  "earlierYearUpdates" : [
-    {
-      "taxablePayEYU":-12.12,
-      "taxEYU":-1.14,
-      "receivedDate":"2017-08-30"
-    },{
-      "taxablePayEYU":-21,
-      "taxEYU":-4.56,
-      "receivedDate":"2017-08-30"
-    }
-  ],
-  "companyBenefits":[]
-} ]
+[
+  {
+    "payeReference": "paye-1",
+    "employerName": "employer-1",
+    "startDate": "2016-01-21",
+    "endDate": "2017-01-01",
+    "taxablePayTotal": 123.12,
+    "taxTotal": 14.14,
+    "earlierYearUpdates": [
+      {
+        "taxablePayEYU": -12.12,
+        "taxEYU": -1.14,
+        "receivedDate": "2017-08-30"
+      },
+      {
+        "taxablePayEYU": -21,
+        "taxEYU": -4.56,
+        "receivedDate": "2017-08-30"
+      }
+    ],
+    "companyBenefits": [
+      {
+        "typeDescription": "Car Fuel Benefit",
+        "amount": 100,
+        "iabdMessageKey": "CarFuelBenefit"
+      },
+      {
+        "typeDescription": "Van Benefit",
+        "amount": 100,
+        "iabdMessageKey": "VanBenefit"
+      }
+    ]
+  },
+  {
+    "payeReference": "paye-2",
+    "employerName": "employer-2",
+    "startDate": "2016-01-02",
+    "taxablePayTotal": 543.21,
+    "taxTotal": 78.9,
+    "earlierYearUpdates": [
+      {
+        "taxablePayEYU": -12.12,
+        "taxEYU": -1.14,
+        "receivedDate": "2017-08-30"
+      },
+      {
+        "taxablePayEYU": -21,
+        "taxEYU": -4.56,
+        "receivedDate": "2017-08-30"
+      }
+    ],
+    "companyBenefits": []
+  }
+]

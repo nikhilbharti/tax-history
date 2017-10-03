@@ -20,28 +20,49 @@ import play.api.Logger
 import play.api.libs.json.Json
 import play.modules.reactivemongo.MongoDbConnection
 import reactivemongo.api.DefaultDB
+import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.BSONObjectID
-import uk.gov.hmrc.mongo.{ReactiveRepository, Repository}
-import uk.gov.hmrc.taxhistory.model.taxhistory.PayAsYouEarnDetails
+import reactivemongo.play.json.ImplicitBSONHandlers._
+import uk.gov.hmrc.mongo.ReactiveRepository
+import uk.gov.hmrc.taxhistory.model.api.PAYEForAgentDetails
+import reactivemongo.api.commands.WriteConcern
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-trait TaxHistoryRepository extends Repository[PayAsYouEarnDetails, BSONObjectID] {
-  def insertRecord(payeModel: PayAsYouEarnDetails):Future[Boolean]
+
+trait TaxHistoryRepository {
+  def insertRecord(payeModel: PAYEForAgentDetails): Future[Boolean]
+
+  def fetchRecords(nino: String, taxYear: Int): Future[Option[PAYEForAgentDetails]]
+
+  def removeRecords(): Future[Unit]
 }
 
-class MongoRepository() (implicit mongo: () => DefaultDB)
-  extends ReactiveRepository[PayAsYouEarnDetails, BSONObjectID](
+class MongoRepository()(implicit mongo: () => DefaultDB)
+  extends ReactiveRepository[PAYEForAgentDetails, BSONObjectID](
     collectionName = "employment-history",
     mongo = mongo,
-    domainFormat = Json.format[PayAsYouEarnDetails]) with TaxHistoryRepository {
+    domainFormat = Json.format[PAYEForAgentDetails]) with TaxHistoryRepository {
 
-  def insertRecord(payeModel: PayAsYouEarnDetails): Future[Boolean] = {
+  override def indexes: Seq[Index] = {
+    Seq(Index(Seq("taxYear" -> IndexType.Ascending)))
+  }
+
+  override def insertRecord(payeModel: PAYEForAgentDetails): Future[Boolean] = {
     collection.insert(payeModel) map { lastError =>
       Logger.debug(s"insertion failure :status${lastError.ok} errors: ${lastError.writeErrors}")
       lastError.ok
     }
+  }
+
+  override def fetchRecords(nino: String, taxYear: Int): Future[Option[PAYEForAgentDetails]] = {
+    collection.find(Json.obj("nino" -> nino,
+      "taxYears.taxYear" -> taxYear)).sort(Json.obj("_id" -> -1)).one[PAYEForAgentDetails]
+  }
+
+  override def removeRecords():Future[Unit] = {
+    removeAll(WriteConcern.Acknowledged).map { _ =>}
   }
 }
 
