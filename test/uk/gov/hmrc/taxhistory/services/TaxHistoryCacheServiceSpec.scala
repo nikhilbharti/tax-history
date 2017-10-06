@@ -92,7 +92,8 @@ class TaxHistoryCacheServiceSpec extends UnitSpec
       }
 
       "fetch from the  cache by ID " in {
-         val fromCache = await(TestTaxHistoryCacheService.findById(nino.nino))
+        val cacheData = await(TestTaxHistoryCacheService.createOrUpdate(nino.nino,"2015",someJson))
+        val fromCache = await(TestTaxHistoryCacheService.findById(nino.nino))
          (fromCache.get \ "2015").get shouldBe someJson
       }
 
@@ -111,7 +112,7 @@ class TaxHistoryCacheServiceSpec extends UnitSpec
 
   }
 
-  override protected def afterAll() = {
+  override protected def beforeEach() = {
    TaxHistoryCacheService.mongoConnector.db().drop()
   }
 
