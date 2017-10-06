@@ -41,13 +41,10 @@ trait TaxHistoryCacheService extends MongoDbConnection{
   }
 
   def getFromCache(nino: String,year: TaxYear)(toCache : => JsValue): Future[Option[JsValue]] = {
-
     findById(nino).flatMap {
-        _ match {
-          case Some(x) => Future.successful(Some(x))
-          case _ => createOrUpdate(nino,year.currentYear.toString,toCache)
-        }
-      }
+      case Some(x) => Future.successful(Some(x))
+      case _ => createOrUpdate(nino,year.currentYear.toString,toCache)
+    }
   }
 
 
